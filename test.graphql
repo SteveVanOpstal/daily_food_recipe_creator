@@ -1,0 +1,397 @@
+mutation {
+  addUnit(
+    input: [
+      {abbr: "mg"}
+      {abbr: "g"}
+      {abbr: "kg"}
+      {abbr: "oz"}
+      {abbr: "lb"}
+      {abbr: "ml"}
+      {abbr: "cl"}
+      {abbr: "dl"}
+      {abbr: "l"}
+      {abbr: "tsp"}
+      {abbr: "Tbs"}
+      {abbr: "fl-oz"}
+      {abbr: "cup"}
+      {abbr: "pnt"}
+      {abbr: "qt"}
+      {abbr: "gal"}
+      {abbr: "part", singular: "part", plural: "parts"}
+    ]
+  ) {
+    unit {
+      abbr
+      singular
+      plural
+    }
+  }
+  addProduct(
+    input: [
+      {name: "egg", plural: "eggs"}
+      {name: "eggplant", plural: "eggplants"}
+      {name: "clove of garlic", plural: "cloves of garlic"}
+      {name: "sesame seeds"}
+      {name: "feta"}
+      {name: "fresh parsley"}
+      {name: "dried oregano"}
+      {name: "dried marjoram"}
+      {name: "dried basil"}
+      {name: "dried dill"}
+      {name: "dried thyme"}
+      {name: "nutmeg"}
+      {name: "black pepper"}
+      {name: "salt"}
+      {name: "red onion", plural: "red onions"}
+      {name: "tomato", plural: "tomatoes"}
+      {name: "sugar"}
+      {name: "olive oil"}
+      {name: "vinegar"}
+      {name: "baking paper sheet", plural: "baking paper sheets"}
+    ]
+  ) {
+    product {
+      name
+      plural
+    }
+  }
+  addMeasurement(
+    input: [
+      {amount: 2, product: {name: "egg"}}
+      {amount: 1, product: {name: "eggplant"}}
+      {amount: 2, product: {name: "clove of garlic"}}
+      {amount: 10, unit: {abbr: "g"}, product: {name: "fresh parsley"}}
+      {amount: 150, unit: {abbr: "g"}, product: {name: "feta"}}
+      {amount: 10, unit: {abbr: "g"}, product: {name: "sesame seeds"}}
+      {amount: 0.5, product: {name: "red onion"}}
+      {amount: 2, product: {name: "tomato"}}
+      {amount: 2, unit: {abbr: "part"}, product: {name: "salt"}}
+      {amount: 1, unit: {abbr: "part"}, product: {name: "pepper"}}
+      {amount: 1, unit: {abbr: "part"}, product: {name: "dried oregano"}}
+      {amount: 1, unit: {abbr: "part"}, product: {name: "dried marjoram"}}
+      {amount: 1, unit: {abbr: "part"}, product: {name: "dried basil"}}
+      {amount: 1, unit: {abbr: "part"}, product: {name: "dried dill"}}
+      {amount: 1, unit: {abbr: "part"}, product: {name: "dried thyme"}}
+      {product: {name: "sugar"}}
+      {product: {name: "olive oil"}}
+      {product: {name: "vinegar"}}
+      {amount: 1, product: {name: "baking paper sheet"}}
+    ]
+  ) {
+    measurement {
+      id
+      amount
+      unit {
+        abbr
+      }
+      product {
+        name
+      }
+    }
+  }
+  addTip(
+    input: [
+      {
+        title: "Dive in head first"
+        description: "Seasoning can be overwhelming, how many parts of the what now? Just add some spices, taste, adjust. Most dried herbs like oregano or thyme are very mild, adding a lot of it won't ruin your dish. Watch out for salt, nutmeg, cinnamon and anything spicy, they will ruin your dish so start of slow with these."
+      }
+      {title: "My dish is too salty", description: "Yikes. In some cases pepper can help."}
+      {
+        title: "Didn't work, my dish is still salty and I'm hungry"
+        description: "Try to increase the volume of your dish. For example, you are creating a tomato sauce, add more tomatoes"
+      }
+      {
+        title: "My dish is too sour"
+        description: "Adding something sweet will balance out the sour. In a liquid like a tomato sauce you can add granulated sugar. In something like a salad you can use honey."
+      }
+      {
+        title: "My dish is too sweet"
+        description: "Adding something sour will balance out the sweet. Vinegar is an easy source of sour. However in something like a tomato sauce it might be easier to use tomato paste."
+      }
+      {title: "Salt? a spice?", description: "Yes salt is a spice for me, I'm white."}
+    ]
+  ) {
+    tip {
+      title
+      description
+    }
+  }
+}
+
+
+mutation {
+  addProduct(
+    input: [
+      {
+        name: "greek seasoning"
+        measurements: [{id: "0x4e59"}, {id: "0x4e4c"}, {id: "0x4e4d"}, {id: "0x4e58"}, {id: "0x4e4e"}, {id: "0x4e54"}, {id: "0x4e5a"}]
+        tips: [{id: "0x4e60"}]
+      }
+    ]
+  ) {
+    product {
+      name
+      measurements {
+        id
+      }
+    }
+  }
+}
+
+mutation {
+  addUnit(input: [{abbr: "sheet", singular: "sheet", plural:"sheets", relative: true}]) {
+    unit {
+      abbr
+      singular
+      plural
+      relative
+    }
+  }
+}
+
+mutation {
+  addAction(
+    input: [
+      {description: "preheat oven - 210", icon: "oven"}
+      {description: "Cut {1} in half", icon: "knife", measurement: {id: "0x4e4a"}}
+      {description: "{1}", icon: "hand", measurement: {id: "0x4e48"}}
+      {description: "{1} cut edge down", icon: "hand", measurement: {id: "0x4e4a"}}
+      {description: "bake ~20-25min or until soft (cooked) all the way through", icon: "oven"}
+      {description: "wisk {1}", measurement: {id: "0x4e49"}}
+      {description: "crumble {1}", measurement: {id: "0x4e50"}}
+      {description: "chop {1}", measurement: {id: "0x4e57"}}
+      {description: "mix together"}
+    ]
+  ) {
+    action {
+      id
+      description
+      icon
+      measurement {
+        id
+      }
+      actions {
+        id
+      }
+    }
+  }
+}
+
+mutation {
+  addAction(
+    input: [
+      {
+        description: "On a baking tray"
+        actions: [{id: "0x4e67"}, {id: "0x4e6a"}]
+      }
+      {description: "In a bowl", actions: [{id: "0x4e68"}, {id: "0x4e69"}, {id: "0x4e64"}, {id: "0x4e6c"}]}
+    ]
+  ) {
+    action {
+      id
+      description
+      icon
+      measurement {
+        id
+      }
+      actions {
+        id
+      }
+    }
+  }
+}
+
+mutation {
+  addPart(
+    input: [{title: "Grilled eggplant", actions: [{id: "0x4e65"}, {id: "0x4e66"}, {id: "0x4e6d"}, {id: "0x4e6b"}]}]
+  ) {
+    part {
+      id
+      title
+      actions {
+        id
+      }
+    }
+  }
+}
+
+
+mutation {
+  addPart(
+    input: [{title: "Tiropitakia filling", actions: [{id: "0x4e6e"}]}]
+  ) {
+    part {
+      id
+      title
+      actions {
+        id
+      }
+    }
+  }
+}
+
+
+mutation {
+  addRecipe(
+    input: [
+      {
+        title: "Tiropitakia with Melitzanosalata"
+        description: "description"
+        parts: [{id: "0x4e6f"}, {id: "0x4e70"}]
+        measurements: [
+          {id: "0x4e49"}
+          {id: "0x4e4a"}
+          {id: "0x4e4b"}
+          {id: "0x4e50"}
+          {id: "0x4e51"}
+          {id: "0x4e63"}
+          {id: "0x4e52"}
+          {id: "0x4e48"}
+          {id: "0x4e4f"}
+          {id: "0x4e55"}
+          {id: "0x4e56"}
+          {id: "0x4e57"}
+          {id: "0x4e5b"}
+        ]
+        draft: false
+      }
+    ]
+  ) {
+    recipe {
+      id
+      title
+      description
+      measurements {
+        id
+      }
+      draft
+    }
+  }
+}
+
+mutation {
+  updateMeasurement(input: {
+          filter:{id: "0x4e48"},
+          set: {
+            unit: {abbr: "sheet"}
+            product: {name: "baking paper"}
+          }
+        }) {
+    measurement {
+      id
+      amount
+      unit {
+        abbr
+        singular
+        plural
+        relative
+      }
+      product {
+        name
+        plural
+        tips {
+          title
+          description
+        }
+        basic
+      }
+    }
+  }
+}
+
+
+mutation {
+  addProduct(input: [{
+            name: "baking paper",
+            basic: true
+          }]
+        ) {
+      product {
+        name
+        plural
+        tips {
+          title
+          description
+        }
+        basic
+      }
+  }
+}
+
+mutation delete() {
+  deleteProduct(filter: {name: {eq: "baking paper sheet"}}) {
+      product {
+        name
+        plural
+        tips {
+          title
+          description
+        }
+        basic
+      }
+  }
+}
+
+mutation {
+  updateTip(
+    input: 
+      {
+        filter: {id: "0x4e61"}
+        set: {
+        title: "Dive in head first"
+        description: "Seasoning can be overwhelming, how many parts of the what now? Just add some spices, taste, adjust. Most dried herbs like oregano or thyme are very mild, adding a lot of it won't ruin your dish. Watch out for salt, nutmeg, cinnamon and anything spicy, start of slow with these."
+        }
+      }
+  ) {
+    tip {
+      id
+      title
+      description
+    }
+  }
+}
+
+mutation {
+  addProduct(input: [{
+            name: "baking paper",
+            basic: true
+          }]
+        ) {
+      product {
+        name
+        plural
+        tips {
+          title
+          description
+        }
+        basic
+      }
+  }
+}
+
+mutation {
+  updateProduct(input: {
+          filter:{name: {eq: "vinegar"}},
+          set: {
+            basic: true
+          }
+        }) {
+    product {
+      name
+      plural
+      tips {
+        title
+        description
+      }
+      basic
+    }
+  }
+}
+
+query {
+    queryRecipe(filter: {slug: {eq: "tiropitakia-with-melitzanosalata"}}) {
+      slug
+      title
+      description
+    }
+}
