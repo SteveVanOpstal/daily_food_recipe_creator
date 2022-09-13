@@ -11,8 +11,8 @@ class AddActionMutationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GraphMutationWidget(
       query: r'''
-        mutation {
-          addAction(input: [{description: ""}]) {
+        mutation ($description: String, $icon: String) {
+          addAction(input: [{description: $description, icon: $icon}]) {
             action {
               id
             }

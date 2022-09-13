@@ -1,5 +1,5 @@
 import 'package:daily_food_recipe_creator/graphql/mutations/add_action_mutation.dart';
-import 'package:daily_food_recipe_creator/recipes/actions/action_view.dart';
+import 'package:daily_food_recipe_creator/recipes/actions/actions_view.dart';
 import 'package:flutter/material.dart';
 
 class ActionsEditWidget extends StatefulWidget {
@@ -12,15 +12,15 @@ class ActionsEditWidget extends StatefulWidget {
 }
 
 class _ActionsEditWidgetState extends State<ActionsEditWidget> {
-  createActionEdits() {
-    if (widget.actions == null) {
-      return [];
+  createActionsView() {
+    if (widget.actions == null || widget.actions!.isEmpty) {
+      return Center(
+        child: Text('no actions'),
+      );
     }
-    return widget.actions!
-        .map((a) => ActionViewWidget(
-              action: a,
-            ))
-        .toList();
+    return ActionsViewWidget(
+      actionIds: widget.actions!.map((a) => a['id']).toList(),
+    );
   }
 
   @override
@@ -28,7 +28,7 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...createActionEdits(),
+        createActionsView(),
         AddActionMutationWidget(
           builder: (addMutation, result) {
             return ElevatedButton(

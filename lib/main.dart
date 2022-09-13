@@ -62,14 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                   actions {
                     id
-                    description
-                    icon
-                    measurement {
-                      id
-                    }
-                    actions {
-                      id
-                    }
                   }
                 }
               }

@@ -1,24 +1,23 @@
 import 'package:daily_food_recipe_creator/graphql/mutations/update_measurement_mutation.dart';
-import 'package:daily_food_recipe_creator/recipes/actions/actions_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ActionEditWidget extends StatefulWidget {
-  ActionEditWidget({Key? key, this.action}) : super(key: key);
+class MeasurementEditWidget extends StatefulWidget {
+  MeasurementEditWidget({Key? key, this.measurement}) : super(key: key);
 
-  final dynamic action;
+  final dynamic measurement;
 
   @override
-  _ActionEditWidgetState createState() => _ActionEditWidgetState();
+  _MeasurementEditWidgetState createState() => _MeasurementEditWidgetState();
 }
 
-class _ActionEditWidgetState extends State<ActionEditWidget> {
+class _MeasurementEditWidgetState extends State<MeasurementEditWidget> {
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _changes = {};
 
   @override
   Widget build(BuildContext context) {
-    _changes = widget.action;
+    _changes = widget.measurement;
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +29,7 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
           child: Column(
             children: [
               TextFormField(
-                initialValue: widget.action['amount'],
+                initialValue: widget.measurement['amount'],
                 onChanged: (value) => _changes['amount'] = value,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
@@ -49,9 +48,6 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
               ),
             ],
           ),
-        ),
-        ActionsEditWidget(
-          actions: widget.action['actions'],
         ),
       ]),
     );

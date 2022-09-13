@@ -1,7 +1,5 @@
-import 'package:daily_food_recipe_creator/graphql/queries/action_query.dart';
 import 'package:daily_food_recipe_creator/recipes/actions/actions_view.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:food_icons/food_icons.dart';
 
 class ActionViewWidget extends StatefulWidget {
@@ -34,22 +32,10 @@ class _ActionViewWidgetState extends State<ActionViewWidget> {
 
       children.add(
         Container(
-          child: ActionQueryWidget(
-              ids: actionIds,
-              builder: (
-                QueryResult result, {
-                Refetch? refetch,
-                FetchMore? fetchMore,
-              }) {
-                return result.isLoading || result.data == null
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ActionsViewWidget(
-                        actions: result.data!['queryAction'],
-                        inverse: !widget.inverse,
-                      );
-              }),
+          child: ActionsViewWidget(
+            actionIds: actionIds,
+            inverse: !widget.inverse,
+          ),
         ),
       );
     }

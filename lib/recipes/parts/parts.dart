@@ -13,12 +13,13 @@ class PartsWidget extends StatefulWidget {
 
 class _PartsWidgetState extends State<PartsWidget> {
   createPartButton(dynamic part) {
+    var actions = part['actions'] as List<dynamic>;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(part['title']),
         ActionsViewWidget(
-          actions: part['actions'],
+          actionIds: actions.map((a) => a['id']).toList(),
           inverse: true,
         )
       ],
@@ -30,10 +31,12 @@ class _PartsWidgetState extends State<PartsWidget> {
     for (var part in parts) {
       recipeParts.add(ElevatedButton(
           onPressed: () {
-            Navigator.push(context,
-                PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
-              return PartWidget(part: part);
-            }));
+            Navigator.push(
+              context,
+              PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
+                return PartWidget(part: part);
+              }),
+            );
           },
           child: createPartButton(part)));
     }

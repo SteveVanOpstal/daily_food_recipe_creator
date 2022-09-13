@@ -2,8 +2,8 @@ import 'package:daily_food_recipe_creator/graphql/graph_mutation.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class UpdateActionMutationWidget extends StatelessWidget {
-  UpdateActionMutationWidget({Key? key, this.builder}) : super(key: key);
+class UpdatePartMutationWidget extends StatelessWidget {
+  UpdatePartMutationWidget({Key? key, this.builder}) : super(key: key);
 
   final MutationBuilder? builder;
 
@@ -11,16 +11,15 @@ class UpdateActionMutationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GraphMutationWidget(
       query: r'''
-        mutation ($id: ID!, $description: String, $icon: String, $actions: [Action]) {
-          updateAction(input: {
+        mutation ($id: ID!, $title: String, $actions: [Action]) {
+          updatePart(input: {
                       filter: {id: [$id]},
                       set: {
-                        description: $description
-                        icon: $icon
+                        title: $title
                         actions: $actions
                       }
                     }) {
-            action {
+            part {
               id
             }
           }

@@ -1,12 +1,14 @@
+import 'package:daily_food_recipe_creator/graphql/queries/action_query.dart';
 import 'package:daily_food_recipe_creator/recipes/actions/action_edit.dart';
 import 'package:daily_food_recipe_creator/recipes/actions/action_view.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ActionsViewWidget extends StatefulWidget {
-  ActionsViewWidget({Key? key, this.actions, this.inverse = false})
+  ActionsViewWidget({Key? key, this.actionIds, this.inverse = false})
       : super(key: key);
 
-  final List<dynamic>? actions;
+  final List<dynamic>? actionIds;
   final bool inverse;
 
   @override
@@ -46,14 +48,26 @@ class _ActionsViewWidgetState extends State<ActionsViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.actions == null) {
+    if (widget.actionIds == null) {
       return Center(
         child: Text('no actions'),
       );
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [...createActions(widget.actions!)],
-    );
+    return ActionQueryWidget(
+        ids: widget.actionIds,
+        builder: (
+          QueryResult result, {
+          Refetch? refetch,
+          FetchMore? fetchMore,
+        }) {
+          return result.isLoading || result.data == null
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [...createActions(result.data!['queryAction'])],
+                );
+        });
   }
 }
