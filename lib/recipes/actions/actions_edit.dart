@@ -39,7 +39,7 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
                 ],
               ),
               onPressed: () {
-                addMutation({});
+                addMutation({'icon': 'hand'});
               },
             );
           },

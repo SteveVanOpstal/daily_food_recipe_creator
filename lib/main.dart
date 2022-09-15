@@ -5,8 +5,9 @@ import 'client_provider.dart';
 import 'recipes/recipes.dart';
 
 final host = 'localhost:8080';
-final graphqlEndpoint = 'http://$host/graphql';
-final subscriptionEndpoint = 'ws://$host/subscriptions';
+final graphqlEndpoint =
+    'https://billowing-leaf.eu-central-1.aws.cloud.dgraph.io/graphql';
+// final subscriptionEndpoint = 'ws://$host/subscriptions';
 
 void main() async {
   await initHiveForFlutter();
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClientProvider(
       uri: graphqlEndpoint,
-      subscriptionUri: subscriptionEndpoint,
+      // subscriptionUri: subscriptionEndpoint,
       child: MaterialApp(
         title: 'Daily food, recipe creator',
         theme: ThemeData(
@@ -49,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           options: QueryOptions(
             document: gql(r'''
             query {
-              queryRecipe(filter: {description: {alloftext: "greek"}}) {
+              queryRecipe {
                 id
                 slug
                 title

@@ -21,10 +21,10 @@ class _ActionsViewWidgetState extends State<ActionsViewWidget> {
         .map(
           (action) => ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: widget.inverse
+                backgroundColor: widget.inverse
                     ? Colors.white
                     : Theme.of(context).primaryColor,
-                onPrimary: widget.inverse
+                foregroundColor: widget.inverse
                     ? Theme.of(context).primaryColor
                     : Colors.white),
             onPressed: () {

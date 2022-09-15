@@ -1,4 +1,4 @@
-import 'package:daily_food_recipe_creator/recipes/recipe.dart';
+import 'package:daily_food_recipe_creator/recipes/recipe/recipe.dart';
 import 'package:flutter/material.dart';
 
 class RecipesWidget extends StatefulWidget {

@@ -27,7 +27,7 @@ ValueNotifier<GraphQLClient> clientFor({
 
   return ValueNotifier<GraphQLClient>(
     GraphQLClient(
-      cache: GraphQLCache(store: HiveStore()),
+      cache: GraphQLCache(/*store: HiveStore()*/),
       link: link,
     ),
   );
