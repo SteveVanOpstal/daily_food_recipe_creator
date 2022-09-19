@@ -1,3 +1,4 @@
+import 'package:daily_food_recipe_creator/graphql/graph_mutation.dart';
 import 'package:daily_food_recipe_creator/graphql/mutations/update_measurement_mutation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,8 @@ class _MeasurementEditWidgetState extends State<MeasurementEditWidget> {
                 onChanged: (value) => _changes['amount'] = value,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
-              UpdateMeasurementMutationWidget(
+              GraphMutationWidget(
+                query: updateMeasurementMutation,
                 builder: (updateMutation, result) {
                   return ElevatedButton(
                     child: Text('submit'),

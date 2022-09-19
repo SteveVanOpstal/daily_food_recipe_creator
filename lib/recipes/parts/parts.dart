@@ -29,16 +29,7 @@ class _PartsWidgetState extends State<PartsWidget> {
   createParts(List<dynamic> parts) {
     var recipeParts = [];
     for (var part in parts) {
-      recipeParts.add(ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
-                return PartWidget(part: part);
-              }),
-            );
-          },
-          child: createPartButton(part)));
+      recipeParts.add(PartWidget(part: part));
     }
     return recipeParts;
   }

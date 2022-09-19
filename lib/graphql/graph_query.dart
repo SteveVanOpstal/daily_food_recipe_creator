@@ -21,6 +21,7 @@ class _GraphQueryWidgetState extends State<GraphQueryWidget> {
         options: QueryOptions(
           document: gql(widget.query!),
           variables: widget.variables,
+          // pollInterval: const Duration(seconds: 3),
         ),
         builder: (
           QueryResult result, {

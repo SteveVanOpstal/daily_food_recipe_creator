@@ -18,31 +18,32 @@ class ActionsViewWidget extends StatefulWidget {
 class _ActionsViewWidgetState extends State<ActionsViewWidget> {
   createActions(List<dynamic> actions) {
     return actions
-        .map(
-          (action) => ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: widget.inverse
-                    ? Colors.white
-                    : Theme.of(context).primaryColor,
-                foregroundColor: widget.inverse
-                    ? Theme.of(context).primaryColor
-                    : Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
-                  return ActionEditWidget(
-                    action: action,
-                  );
-                }),
-              );
-            },
-            child: ActionViewWidget(
-              action: action,
-              inverse: widget.inverse,
-            ),
-          ),
-        )
+        .map((action) => ActionEditWidget(
+                  action: action,
+                )
+
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //       backgroundColor: widget.inverse
+            //           ? Colors.white
+            //           : Theme.of(context).primaryColor,
+            //       foregroundColor: widget.inverse
+            //           ? Theme.of(context).primaryColor
+            //           : Colors.white),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
+            //         return ;
+            //       }),
+            //     );
+            //   },
+            //   child: ActionViewWidget(
+            //     action: action,
+            //     inverse: widget.inverse,
+            //   ),
+            // ),
+            )
         .toList();
   }
 

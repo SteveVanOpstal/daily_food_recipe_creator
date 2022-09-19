@@ -3,6 +3,8 @@ import 'package:daily_food_recipe_creator/recipes/actions/actions_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:food_icons/food_icons.dart';
 
+import 'action_description_edit.dart';
+
 class ActionEditWidget extends StatefulWidget {
   ActionEditWidget({Key? key, this.action}) : super(key: key);
 
@@ -38,44 +40,37 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
   Widget build(BuildContext context) {
     _changes = widget.action;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('action'),
+    return Column(children: [
+      Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            TextButton(
+              child: Text(widget.action['description'] ?? 'Description'),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ActionDescriptionEditWidget(
+                      action: widget.action,
+                      changed: () {
+                        setState(() {});
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            Flex(
+              direction: Axis.horizontal,
+              children: iconButtons(),
+            ),
+          ],
+        ),
       ),
-      body: Column(children: [
-        Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                initialValue: widget.action['description'],
-                onChanged: (value) => _changes['description'] = value,
-                validator: (value) => value!.isEmpty ? 'empty' : null,
-              ),
-              Flex(
-                direction: Axis.horizontal,
-                children: iconButtons(),
-              ),
-              UpdateActionMutationWidget(
-                builder: (updateMutation, result) {
-                  return ElevatedButton(
-                    child: Text('submit'),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState?.save();
-                        updateMutation(_changes);
-                      }
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-        ActionsEditWidget(
-          actions: widget.action['actions'],
-        ),
-      ]),
-    );
+      ActionsEditWidget(
+        actions: widget.action['actions'],
+      ),
+    ]);
   }
 }

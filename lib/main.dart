@@ -1,3 +1,4 @@
+import 'package:daily_food_recipe_creator/graphql/graph_query.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -23,8 +24,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Daily food, recipe creator',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Colors.blue,
+          primarySwatch: Colors.deepPurple,
+          primaryColor: Colors.deepPurple,
         ),
         home: MyHomePage(),
       ),
@@ -46,9 +47,19 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('home'),
       ),
-      body: Query(
-          options: QueryOptions(
-            document: gql(r'''
+      body: GraphQueryWidget(
+          builder: (
+            QueryResult result, {
+            Refetch? refetch,
+            FetchMore? fetchMore,
+          }) {
+            return result.isLoading || result.data == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RecipesWidget(recipes: result.data!['queryRecipe']);
+          },
+          query: r'''
             query {
               queryRecipe {
                 id
@@ -68,18 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
               }
             }
           '''),
-          ),
-          builder: (
-            QueryResult result, {
-            Refetch? refetch,
-            FetchMore? fetchMore,
-          }) {
-            return result.isLoading || result.data == null
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : RecipesWidget(recipes: result.data!['queryRecipe']);
-          }),
     );
   }
 }
