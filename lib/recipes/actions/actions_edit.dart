@@ -14,39 +14,39 @@ class ActionsEditWidget extends StatefulWidget {
 
 class _ActionsEditWidgetState extends State<ActionsEditWidget> {
   createActionsView() {
-    if (widget.actions == null || widget.actions!.isEmpty) {
-      return Center(
-        child: Text('no actions'),
+    var components = [];
+    if (widget.actions != null) {
+      components.add(
+        ActionsViewWidget(
+          actionIds: widget.actions!.map((a) => a['id']).toList(),
+        ),
       );
     }
-    return ActionsViewWidget(
-      actionIds: widget.actions!.map((a) => a['id']).toList(),
+
+    components.add(
+      GraphMutationWidget(
+        query: addActionMutation,
+        builder: (addMutation, result) {
+          return IconButton(
+            style: IconButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColor),
+            icon: Icon(Icons.add),
+            onPressed: () {
+              addMutation({'icon': 'hand'});
+            },
+          );
+        },
+      ),
     );
+
+    return components;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        createActionsView(),
-        GraphMutationWidget(
-          query: addActionMutation,
-          builder: (addMutation, result) {
-            return ElevatedButton(
-              child: Row(
-                children: [
-                  Icon(Icons.add),
-                  Text('add'),
-                ],
-              ),
-              onPressed: () {
-                addMutation({'icon': 'hand'});
-              },
-            );
-          },
-        ),
-      ],
+      children: [...createActionsView()],
     );
   }
 }

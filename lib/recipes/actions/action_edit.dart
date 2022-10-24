@@ -1,9 +1,9 @@
-import 'package:daily_food_recipe_creator/graphql/mutations/update_action_mutation.dart';
 import 'package:daily_food_recipe_creator/recipes/actions/actions_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:food_icons/food_icons.dart';
 
 import 'action_description_edit.dart';
+import 'action_icon_edit.dart';
 
 class ActionEditWidget extends StatefulWidget {
   ActionEditWidget({Key? key, this.action}) : super(key: key);
@@ -18,24 +18,6 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _changes = {};
 
-  iconButtons() {
-    return FoodIcons.iconNames
-        .map(
-          (iconName) => IconButton(
-            color: _changes['icon'] == iconName
-                ? Theme.of(context).primaryColor
-                : null,
-            icon: Icon(FoodIcons.getIcon(iconName)),
-            onPressed: () {
-              setState(() {
-                _changes['icon'] = iconName;
-              });
-            },
-          ),
-        )
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     _changes = widget.action;
@@ -43,8 +25,26 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
     return Column(children: [
       Form(
         key: _formKey,
-        child: Column(
+        child: Row(
           children: [
+            IconButton(
+              icon: Icon(_changes['icon'] != null
+                  ? FoodIcons.getIcon(_changes['icon'])
+                  : Icons.error),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ActionIconEditWidget(
+                      action: widget.action,
+                      changed: () {
+                        setState(() {});
+                      },
+                    );
+                  },
+                );
+              },
+            ),
             TextButton(
               child: Text(widget.action['description'] ?? 'Description'),
               onPressed: () {
@@ -61,15 +61,14 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
                 );
               },
             ),
-            Flex(
-              direction: Axis.horizontal,
-              children: iconButtons(),
-            ),
           ],
         ),
       ),
-      ActionsEditWidget(
-        actions: widget.action['actions'],
+      Padding(
+        padding: const EdgeInsets.only(left: 50.0),
+        child: ActionsEditWidget(
+          actions: widget.action['actions'],
+        ),
       ),
     ]);
   }

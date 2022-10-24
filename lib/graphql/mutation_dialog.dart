@@ -35,6 +35,7 @@ class _MutationDialogWidgetState extends State<MutationDialogWidget> {
       child: Form(
         key: _formKey,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextFormField(
               initialValue: widget.subject[widget.subjectKey],
@@ -42,27 +43,32 @@ class _MutationDialogWidgetState extends State<MutationDialogWidget> {
               validator: widget.validator,
               autofocus: true,
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            GraphMutationWidget(
-              query: widget.query,
-              builder: (updateMutation, result) {
-                return ElevatedButton(
-                  child: Text('Save'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState?.save();
-                      updateMutation(_changes);
-                      widget.changed();
-                      Navigator.pop(context);
-                    }
+                    Navigator.pop(context);
                   },
-                );
-              },
+                  child: Text('Cancel'),
+                ),
+                GraphMutationWidget(
+                  query: widget.query,
+                  builder: (updateMutation, result) {
+                    return ElevatedButton(
+                      child: Text('Save'),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState?.save();
+                          updateMutation(_changes);
+                          widget.changed();
+                          Navigator.pop(context);
+                        }
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

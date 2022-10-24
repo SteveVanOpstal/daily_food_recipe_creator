@@ -1,6 +1,5 @@
 import 'package:daily_food_recipe_creator/graphql/queries/action_query.dart';
 import 'package:daily_food_recipe_creator/recipes/actions/action_edit.dart';
-import 'package:daily_food_recipe_creator/recipes/actions/action_view.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -55,20 +54,21 @@ class _ActionsViewWidgetState extends State<ActionsViewWidget> {
       );
     }
     return ActionQueryWidget(
-        ids: widget.actionIds,
-        builder: (
-          QueryResult result, {
-          Refetch? refetch,
-          FetchMore? fetchMore,
-        }) {
-          return result.isLoading || result.data == null
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [...createActions(result.data!['queryAction'])],
-                );
-        });
+      ids: widget.actionIds,
+      builder: (
+        QueryResult result, {
+        Refetch? refetch,
+        FetchMore? fetchMore,
+      }) {
+        return result.isLoading || result.data == null
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [...createActions(result.data!['queryAction'])],
+              );
+      },
+    );
   }
 }
