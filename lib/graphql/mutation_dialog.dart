@@ -42,6 +42,7 @@ class _MutationDialogWidgetState extends State<MutationDialogWidget> {
               onChanged: (value) => _changes[widget.subjectKey] = value,
               validator: widget.validator,
               autofocus: true,
+              maxLines: 3,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

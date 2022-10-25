@@ -32,7 +32,7 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
                 backgroundColor: Theme.of(context).primaryColor),
             icon: Icon(Icons.add),
             onPressed: () {
-              addMutation({'icon': 'hand'});
+              addMutation({'description': 'New action', 'icon': 'hand'});
             },
           );
         },
