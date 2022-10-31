@@ -23,21 +23,21 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
       );
     }
 
-    components.add(
-      GraphMutationWidget(
-        query: addActionMutation,
-        builder: (addMutation, result) {
-          return IconButton(
-            style: IconButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor),
-            icon: Icon(Icons.add),
-            onPressed: () {
-              addMutation({'description': 'New action', 'icon': 'hand'});
-            },
-          );
-        },
-      ),
-    );
+    // components.add(
+    //   GraphMutationWidget(
+    //     query: addActionMutation,
+    //     builder: (addMutation, result) {
+    //       return IconButton(
+    //         style: IconButton.styleFrom(
+    //             backgroundColor: Theme.of(context).primaryColor),
+    //         icon: Icon(Icons.add),
+    //         onPressed: () {
+    //           addMutation({'description': 'New action', 'icon': 'hand'});
+    //         },
+    //       );
+    //     },
+    //   ),
+    // );
 
     return components;
   }
