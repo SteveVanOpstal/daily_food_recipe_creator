@@ -34,8 +34,6 @@ class _ActionIconEditWidgetState extends State<ActionIconEditWidget> {
               setState(
                 () {
                   _changes['icon'] = iconName;
-                  widget.changed();
-                  Navigator.pop(context);
                 },
               );
             },
@@ -61,9 +59,9 @@ class _ActionIconEditWidgetState extends State<ActionIconEditWidget> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -71,12 +69,15 @@ class _ActionIconEditWidgetState extends State<ActionIconEditWidget> {
               ),
               GraphMutationWidget(
                 query: updateActionMutation,
+                completed: () {
+                  widget.changed();
+                },
                 builder: (updateMutation, result) {
                   return ElevatedButton(
                     child: Text('Save'),
                     onPressed: () {
+                      _changes.remove('actions');
                       updateMutation(_changes);
-                      widget.changed();
                       Navigator.pop(context);
                     },
                   );

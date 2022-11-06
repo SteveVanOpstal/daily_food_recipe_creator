@@ -11,14 +11,13 @@ class ActionDescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String description = action['description'];
 
-    description.split(RegExp('\{\d\}'));
+    final descriptionSplits = description.split(RegExp('{[1]}'));
 
     return Row(
       children: [
-        Text(description),
-        Text(' '),
-        MeasurementWidget(),
-        Text(' '),
+        Text(descriptionSplits[0]),
+        MeasurementWidget(action: action),
+        Text(descriptionSplits.length >= 2 ? descriptionSplits[1] : ''),
       ],
     );
   }

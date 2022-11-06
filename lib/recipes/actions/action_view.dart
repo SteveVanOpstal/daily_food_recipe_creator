@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:food_icons/food_icons.dart';
 
 class ActionViewWidget extends StatefulWidget {
-  ActionViewWidget({Key? key, this.action, this.inverse = false})
+  ActionViewWidget(
+      {Key? key, this.action, this.inverse = false, required this.changed})
       : super(key: key);
 
   final dynamic action;
   final bool inverse;
+  final Function changed;
 
   @override
   _ActionViewWidgetState createState() => _ActionViewWidgetState();
@@ -30,14 +32,18 @@ class _ActionViewWidgetState extends State<ActionViewWidget> {
     if (actions.isNotEmpty) {
       var actionIds = actions.map((a) => a['id']).toList();
 
-      children.add(
-        Container(
-          child: ActionsViewWidget(
-            actionIds: actionIds,
-            inverse: !widget.inverse,
-          ),
-        ),
-      );
+      // children.add(
+      //   Container(
+      //     child: ActionsViewWidget(
+      //       parent: widget.action,
+      //       actionIds: actionIds,
+      //       inverse: !widget.inverse,
+      //       changed: () {
+      //         widget.changed();
+      //       },
+      //     ),
+      //   ),
+      // );
     }
 
     return Column(

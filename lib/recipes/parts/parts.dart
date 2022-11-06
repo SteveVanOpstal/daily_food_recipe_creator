@@ -19,6 +19,7 @@ class _PartsWidgetState extends State<PartsWidget> {
       children: [
         Text(part['title']),
         ActionsViewWidget(
+          parent: part,
           actionIds: actions.map((a) => a['id']).toList(),
           inverse: true,
         )

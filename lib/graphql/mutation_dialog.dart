@@ -11,6 +11,7 @@ class MutationDialogWidget extends StatefulWidget {
     required this.query,
     required this.changed,
     this.validator,
+    this.children,
   }) : super(key: key);
 
   final dynamic subject;
@@ -18,6 +19,7 @@ class MutationDialogWidget extends StatefulWidget {
   final String query;
   final Function changed;
   final String? Function(String?)? validator;
+  final List<Widget>? children;
 
   @override
   _MutationDialogWidgetState createState() => _MutationDialogWidgetState();
@@ -25,11 +27,11 @@ class MutationDialogWidget extends StatefulWidget {
 
 class _MutationDialogWidgetState extends State<MutationDialogWidget> {
   final _formKey = GlobalKey<FormState>();
-  Map<String, dynamic> _changes = {};
+  Map<String, dynamic> _previousValue = {};
 
   @override
   Widget build(BuildContext context) {
-    _changes = widget.subject;
+    _previousValue = widget.subject;
 
     return EditDialogWidget(
       child: Form(
@@ -39,30 +41,35 @@ class _MutationDialogWidgetState extends State<MutationDialogWidget> {
           children: [
             TextFormField(
               initialValue: widget.subject[widget.subjectKey],
-              onChanged: (value) => _changes[widget.subjectKey] = value,
+              onChanged: (value) => widget.subject[widget.subjectKey] = value,
               validator: widget.validator,
               autofocus: true,
               maxLines: 3,
             ),
+            ...(widget.children ?? []),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    widget.subject[widget.subjectKey] =
+                        _previousValue[widget.subjectKey];
                     Navigator.pop(context);
                   },
                   child: Text('Cancel'),
                 ),
                 GraphMutationWidget(
                   query: widget.query,
+                  completed: () {
+                    widget.changed();
+                  },
                   builder: (updateMutation, result) {
                     return ElevatedButton(
                       child: Text('Save'),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState?.save();
-                          updateMutation(_changes);
-                          widget.changed();
+                          updateMutation(widget.subject);
                           Navigator.pop(context);
                         }
                       },

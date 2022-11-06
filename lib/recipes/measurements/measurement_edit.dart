@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MeasurementEditWidget extends StatefulWidget {
-  MeasurementEditWidget({Key? key, this.measurement}) : super(key: key);
+  MeasurementEditWidget({Key? key, this.measurement, required this.changes})
+      : super(key: key);
 
   final dynamic measurement;
+  final VoidCallback changes;
 
   @override
   _MeasurementEditWidgetState createState() => _MeasurementEditWidgetState();
@@ -36,6 +38,9 @@ class _MeasurementEditWidgetState extends State<MeasurementEditWidget> {
               ),
               GraphMutationWidget(
                 query: updateMeasurementMutation,
+                completed: () {
+                  widget.changes();
+                },
                 builder: (updateMutation, result) {
                   return ElevatedButton(
                     child: Text('submit'),

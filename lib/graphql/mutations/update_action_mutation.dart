@@ -1,5 +1,5 @@
 const updateActionMutation = r'''
-mutation ($id: ID!, $description: String, $icon: String, $actions: [Action]) {
+mutation ($id: ID!, $description: String, $icon: String, $actions: [ActionRef]) {
   updateAction(input: {
               filter: {id: [$id]},
               set: {

@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ActionsViewWidget extends StatefulWidget {
-  ActionsViewWidget({Key? key, this.actionIds, this.inverse = false})
+  ActionsViewWidget(
+      {Key? key,
+      required this.parent,
+      required this.actionIds,
+      this.inverse = false})
       : super(key: key);
 
-  final List<dynamic>? actionIds;
+  final dynamic parent;
+  final List<dynamic> actionIds;
   final bool inverse;
 
   @override
@@ -15,10 +20,12 @@ class ActionsViewWidget extends StatefulWidget {
 }
 
 class _ActionsViewWidgetState extends State<ActionsViewWidget> {
-  createActions(List<dynamic> actions) {
+  createActions(List<dynamic> actions, Refetch? refetch) {
     return actions
         .map((action) => ActionEditWidget(
+                  parent: widget.parent,
                   action: action,
+                  refetch: refetch,
                 )
 
             // ElevatedButton(
@@ -48,11 +55,11 @@ class _ActionsViewWidgetState extends State<ActionsViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.actionIds == null) {
-      return Center(
-        child: Text('no actions'),
-      );
-    }
+    // if (widget.actionIds == null) {
+    //   return Center(
+    //     child: Text('no actions'),
+    //   );
+    // }
     return ActionQueryWidget(
       ids: widget.actionIds,
       builder: (
@@ -66,7 +73,9 @@ class _ActionsViewWidgetState extends State<ActionsViewWidget> {
               )
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [...createActions(result.data!['queryAction'])],
+                children: [
+                  ...createActions(result.data!['queryAction'], refetch)
+                ],
               );
       },
     );
