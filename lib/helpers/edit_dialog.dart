@@ -1,8 +1,7 @@
-import 'package:daily_food_recipe_creator/graphql/mutations/update_recipe_mutation.dart';
 import 'package:flutter/material.dart';
 
 class EditDialogWidget extends StatefulWidget {
-  EditDialogWidget({Key? key, this.child, this.height = 200}) : super(key: key);
+  EditDialogWidget({Key? key, this.child, this.height = 230}) : super(key: key);
 
   final Widget? child;
   final double height;

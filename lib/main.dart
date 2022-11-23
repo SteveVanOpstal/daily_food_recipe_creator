@@ -15,6 +15,9 @@ void main() async {
   runApp(MyApp());
 }
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,7 @@ class MyApp extends StatelessWidget {
       uri: graphqlEndpoint,
       // subscriptionUri: subscriptionEndpoint,
       child: MaterialApp(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
         title: 'Daily food, recipe creator',
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,

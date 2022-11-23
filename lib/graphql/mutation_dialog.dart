@@ -39,6 +39,11 @@ class _MutationDialogWidgetState extends State<MutationDialogWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text(
+              widget.subjectKey.toString(),
+              style:
+                  DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),
+            ),
             TextFormField(
               initialValue: widget.subject[widget.subjectKey],
               onChanged: (value) => widget.subject[widget.subjectKey] = value,
@@ -69,7 +74,10 @@ class _MutationDialogWidgetState extends State<MutationDialogWidget> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState?.save();
-                          updateMutation(widget.subject);
+                          updateMutation({
+                            'id': widget.subject['id'],
+                            widget.subjectKey: widget.subject[widget.subjectKey]
+                          });
                           Navigator.pop(context);
                         }
                       },

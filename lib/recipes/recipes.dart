@@ -1,6 +1,9 @@
 import 'package:daily_food_recipe_creator/recipes/recipe/recipe.dart';
 import 'package:flutter/material.dart';
 
+import '../graphql/graph_mutation.dart';
+import '../graphql/mutations/add_recipe_mutation.dart';
+
 class RecipesWidget extends StatefulWidget {
   RecipesWidget({Key? key, this.recipes}) : super(key: key);
 
@@ -11,15 +14,17 @@ class RecipesWidget extends StatefulWidget {
 }
 
 class _RecipesWidgetState extends State<RecipesWidget> {
-  createRecipeButton(dynamic recipe) {
+  buildRecipeButton(dynamic recipe) {
     return Column(children: [
-      Text(recipe['title']),
-      Text(recipe['slug']),
-      Text(recipe['description'])
+      Text(
+        recipe['title'],
+        style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 2.0),
+      ),
+      Text(recipe['description'] ?? '')
     ]);
   }
 
-  createRecipes(List<dynamic> recipes) {
+  buildRecipes(List<dynamic> recipes) {
     var recipeWidgets = [];
     for (var recipe in recipes) {
       recipeWidgets.add(ElevatedButton(
@@ -29,7 +34,7 @@ class _RecipesWidgetState extends State<RecipesWidget> {
               return RecipeWidget(recipe: recipe);
             }));
           },
-          child: createRecipeButton(recipe)));
+          child: buildRecipeButton(recipe)));
     }
     return recipeWidgets;
   }
@@ -42,7 +47,24 @@ class _RecipesWidgetState extends State<RecipesWidget> {
       );
     }
     return GridView.count(crossAxisCount: 5, children: [
-      ...createRecipes(widget.recipes!),
+      ...buildRecipes(widget.recipes!),
+      GraphMutationWidget(
+        query: addRecipeMutation,
+        builder: (addMutation, result) {
+          return IconButton(
+            style: IconButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            icon: Icon(Icons.add),
+            onPressed: () {
+              addMutation({
+                'title': 'New recipe',
+                'slug': 'new-recipe',
+              });
+            },
+          );
+        },
+      ),
     ]);
   }
 }

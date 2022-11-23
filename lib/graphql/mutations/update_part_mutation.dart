@@ -1,8 +1,9 @@
 const updatePartMutation = r'''
-mutation ($id: ID!, $actions: [ActionRef]) {
+mutation ($id: ID!, $title: String, $actions: [ActionRef]) {
   updatePart(input: {
               filter: {id: [$id]},
               set: {
+                title: $title
                 actions: $actions
               }
             }) {

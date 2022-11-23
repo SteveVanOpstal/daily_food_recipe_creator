@@ -20,7 +20,7 @@ class ActionsViewWidget extends StatefulWidget {
 }
 
 class _ActionsViewWidgetState extends State<ActionsViewWidget> {
-  createActions(List<dynamic> actions, Refetch? refetch) {
+  buildActions(List<dynamic> actions, Refetch? refetch) {
     return actions
         .map((action) => ActionEditWidget(
                   parent: widget.parent,
@@ -74,7 +74,7 @@ class _ActionsViewWidgetState extends State<ActionsViewWidget> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...createActions(result.data!['queryAction'], refetch)
+                  ...buildActions(result.data!['queryAction'], refetch)
                 ],
               );
       },

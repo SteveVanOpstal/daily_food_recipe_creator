@@ -48,10 +48,11 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                 context: context,
                 builder: (BuildContext context) {
                   return RecipeSlugEditWidget(
-                      recipe: widget.recipe,
-                      changed: () {
-                        setState(() {});
-                      });
+                    recipe: widget.recipe,
+                    changed: () {
+                      setState(() {});
+                    },
+                  );
                 },
               );
             },
@@ -63,15 +64,16 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                 context: context,
                 builder: (BuildContext context) {
                   return RecipeDescriptionEditWidget(
-                      recipe: widget.recipe,
-                      changed: () {
-                        setState(() {});
-                      });
+                    recipe: widget.recipe,
+                    changed: () {
+                      setState(() {});
+                    },
+                  );
                 },
               );
             },
           ),
-          PartsWidget(parts: widget.recipe['parts'])
+          PartsWidget(recipe: widget.recipe)
         ],
       ),
     );

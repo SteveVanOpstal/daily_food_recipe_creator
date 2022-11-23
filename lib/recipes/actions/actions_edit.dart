@@ -20,83 +20,82 @@ class ActionsEditWidget extends StatefulWidget {
 }
 
 class _ActionsEditWidgetState extends State<ActionsEditWidget> {
-  createActionsView() {
-    var components = [];
-    components.add(
-      ActionsViewWidget(
-        parent: widget.parent,
-        actionIds: widget.actions.map((a) => a['id']).toList(),
-      ),
-    );
-    components.add(
-      GraphMutationWidget(
-        query: addActionMutation,
-        builder: (addMutation, result) {
-          return GraphMutationWidget(
-            completed: () {
-              if (widget.changed != null) {
-                widget.changed!();
-              }
-            },
-            query: widget.parent['title'].toString().isEmpty
-                ? updatePartMutation
-                : updateActionMutation,
-            builder: (updateMutation, _) {
-              return IconButton(
-                style: IconButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-                icon: Icon(Icons.add),
-                onPressed: () async {
-                  final result = addMutation({
-                    'description': 'New action',
-                    'icon': 'hand',
+  buildAddActionButton() {
+    return GraphMutationWidget(
+      query: addActionMutation,
+      builder: (addMutation, result) {
+        return GraphMutationWidget(
+          completed: () {
+            if (widget.changed != null) {
+              widget.changed!();
+            }
+          },
+          query: widget.parent['title'].toString().isEmpty
+              ? updatePartMutation
+              : updateActionMutation,
+          builder: (updateMutation, _) {
+            return ElevatedButton.icon(
+              style: IconButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
+              icon: Icon(Icons.add),
+              label: Text('Add action'),
+              onPressed: () async {
+                final result = addMutation({
+                  'description': 'New action',
+                  'icon': 'hand',
+                });
+                final networkResult = await result.networkResult;
+                final id = networkResult?.data?['addAction']['action'][0]['id'];
+                if (!id.isEmpty) {
+                  setState(() {
+                    widget.parent['actions']
+                        .add({'__typename': 'Action', 'id': id});
                   });
-                  final networkResult = await result.networkResult;
-                  final id =
-                      networkResult?.data?['addAction']['action'][0]['id'];
-                  if (!id.isEmpty) {
-                    setState(() {
-                      widget.parent['actions']
-                          .add({'__typename': 'Action', 'id': id});
-                    });
-                    final actions = (widget.parent['actions'] as List)
-                        .map((a) => {'id': a['id']})
-                        .toList();
-                    updateMutation(
-                        {'id': widget.parent['id'], 'actions': actions});
-                  }
-                },
-              );
-            },
-          );
-        },
-      ),
-      //   GraphMutationWidget(
-      //     query: addActionMutation,
-      //     builder: (addMutation, result) {
-      //       return IconButton(
-      //         style: IconButton.styleFrom(
-      //             backgroundColor: Theme.of(context).primaryColor),
-      //         icon: Icon(Icons.add),
-      //         onPressed: () {
-      //           addMutation({'description': 'New action', 'icon': 'hand'});
-      //         },
-      //       );
-      //     },
-      //   ),
+                  final actions = (widget.parent['actions'] as List)
+                      .map((a) => {'id': a['id']})
+                      .toList();
+                  updateMutation(
+                      {'id': widget.parent['id'], 'actions': actions});
+                }
+              },
+            );
+          },
+        );
+      },
     );
-
-    return components;
   }
+
+  //   GraphMutationWidget(
+  //     query: addActionMutation,
+  //     builder: (addMutation, result) {
+  //       return IconButton(
+  //         style: IconButton.styleFrom(
+  //             backgroundColor: Theme.of(context).primaryColor),
+  //         icon: Icon(Icons.add),
+  //         onPressed: () {
+  //           addMutation({'description': 'New action', 'icon': 'hand'});
+  //         },
+  //       );
+  //     },
+  //   ),
 
   @override
   Widget build(BuildContext context) {
+    if (widget.actions.isEmpty) {
+      return buildAddActionButton();
+    }
     return Container(
       alignment: Alignment.topLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [...createActionsView()],
+        children: [
+          ActionsViewWidget(
+            parent: widget.parent,
+            actionIds: widget.actions.map((a) => a['id']).toList(),
+          ),
+          buildAddActionButton(),
+        ],
       ),
     );
   }

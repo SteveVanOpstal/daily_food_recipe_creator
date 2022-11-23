@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../main.dart';
+
 class GraphMutationWidget extends StatelessWidget {
   GraphMutationWidget(
       {Key? key, required this.query, required this.builder, this.completed})
@@ -25,7 +27,10 @@ class GraphMutationWidget extends StatelessWidget {
             content: Text('mutation error! "$exception"'),
             duration: Duration(days: 1),
           );
-          ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+
+          if (rootScaffoldMessengerKey.currentState != null) {
+            rootScaffoldMessengerKey.currentState!.showSnackBar(errorSnackbar);
+          }
         },
       ),
       builder: builder,
