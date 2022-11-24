@@ -9,9 +9,6 @@ mutation ($id: ID!, $title: String, $actions: [ActionRef]) {
             }) {
     part {
       id
-      actions {
-        id
-      }
     }
   }
 }

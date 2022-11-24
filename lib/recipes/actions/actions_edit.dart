@@ -30,9 +30,9 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
               widget.changed!();
             }
           },
-          query: widget.parent['title'].toString().isEmpty
-              ? updatePartMutation
-              : updateActionMutation,
+          query: widget.parent['title'] == null
+              ? updateActionMutation
+              : updatePartMutation,
           builder: (updateMutation, _) {
             return ElevatedButton.icon(
               style: IconButton.styleFrom(
