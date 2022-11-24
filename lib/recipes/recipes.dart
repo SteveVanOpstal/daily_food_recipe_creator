@@ -1,13 +1,14 @@
 import 'package:daily_food_recipe_creator/recipes/recipe/recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../graphql/graph_mutation.dart';
+import '../graphql/graph_query.dart';
 import '../graphql/mutations/add_recipe_mutation.dart';
+import '../graphql/queries/recipes_query.dart';
 
 class RecipesWidget extends StatefulWidget {
-  RecipesWidget({Key? key, this.recipes}) : super(key: key);
-
-  final List<dynamic>? recipes;
+  RecipesWidget({Key? key}) : super(key: key);
 
   @override
   _RecipesWidgetState createState() => _RecipesWidgetState();
@@ -39,32 +40,57 @@ class _RecipesWidgetState extends State<RecipesWidget> {
     return recipeWidgets;
   }
 
+  buildRecipeAddButton() {
+    return GraphMutationWidget(
+      query: addRecipeMutation,
+      builder: (addMutation, result) {
+        return IconButton(
+          style: IconButton.styleFrom(
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          icon: Icon(Icons.add),
+          onPressed: () {
+            addMutation({
+              'title': 'New recipe',
+              'slug': 'new-recipe',
+            });
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.recipes == null) {
-      return Center(
-        child: Text('no recipes'),
-      );
-    }
-    return GridView.count(crossAxisCount: 5, children: [
-      ...buildRecipes(widget.recipes!),
-      GraphMutationWidget(
-        query: addRecipeMutation,
-        builder: (addMutation, result) {
-          return IconButton(
-            style: IconButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
-            icon: Icon(Icons.add),
-            onPressed: () {
-              addMutation({
-                'title': 'New recipe',
-                'slug': 'new-recipe',
-              });
-            },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recipes'),
+      ),
+      body: GraphQueryWidget(
+        query: recipesQuery,
+        builder: (
+          QueryResult result, {
+          Refetch? refetch,
+          FetchMore? fetchMore,
+        }) {
+          if (result.isLoading || result.data == null) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final recipes = result.data!['queryRecipe'];
+          if (recipes == null) {
+            return buildRecipeAddButton();
+          }
+          return GridView.count(
+            crossAxisCount: 5,
+            children: [
+              ...buildRecipes(recipes!),
+              buildRecipeAddButton(),
+            ],
           );
         },
       ),
-    ]);
+    );
   }
 }

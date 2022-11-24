@@ -1,4 +1,5 @@
 import 'package:daily_food_recipe_creator/graphql/graph_query.dart';
+import 'package:daily_food_recipe_creator/schedule/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -49,40 +50,32 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('home'),
+        title: Text('Home'),
       ),
-      body: GraphQueryWidget(
-          builder: (
-            QueryResult result, {
-            Refetch? refetch,
-            FetchMore? fetchMore,
-          }) {
-            return result.isLoading || result.data == null
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : RecipesWidget(recipes: result.data!['queryRecipe']);
-          },
-          query: r'''
-            query {
-              queryRecipe {
-                id
-                slug
-                title
-                description,
-                parts {
-                  id
-                  title
-                  related {
-                    id
-                  }
-                  actions {
-                    id
-                  }
-                }
-              }
-            }
-          '''),
+      body: Center(
+        child: Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecipesWidget()),
+                );
+              },
+              child: Text('Recipes'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScheduleWidget()),
+                );
+              },
+              child: Text('Schedule'),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
