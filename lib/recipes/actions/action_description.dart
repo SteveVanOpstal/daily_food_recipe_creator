@@ -16,7 +16,7 @@ class ActionDescriptionWidget extends StatelessWidget {
     return Row(
       children: [
         Text(descriptionSplits[0]),
-        MeasurementWidget(action: action),
+        MeasurementWidget(measurement: action['measurement']),
         Text(descriptionSplits.length >= 2 ? descriptionSplits[1] : ''),
       ],
     );

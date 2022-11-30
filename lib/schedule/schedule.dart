@@ -37,8 +37,12 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
             );
           }
           final schedules = result.data!['querySchedule'] as List;
-          final firstDate = DateTime.parse(schedules.first['date']);
-          final lastDate = DateTime.parse(schedules.last['date']);
+          dynamic firstDate = DateTime.now();
+          dynamic lastDate = DateTime.now();
+          if (schedules.isNotEmpty) {
+            firstDate = DateTime.parse(schedules.first['date']);
+            lastDate = DateTime.parse(schedules.last['date']);
+          }
 
           return Column(
             children: [

@@ -1,5 +1,5 @@
 const updateRecipeMutation = r'''
-mutation ($id: ID!, $title: String, $slug: String, $description: String, $parts: [PartRef]) {
+mutation ($id: ID!, $title: String, $slug: String, $description: String, $measurements: [MeasurementRef], $parts: [PartRef]) {
   updateRecipe(input: {
               filter: {id: [$id]},
               set: {
@@ -7,6 +7,7 @@ mutation ($id: ID!, $title: String, $slug: String, $description: String, $parts:
                 slug: $slug
                 description: $description
                 parts: $parts
+                measurements: $measurements
               }
             }) {
     recipe {
@@ -14,6 +15,9 @@ mutation ($id: ID!, $title: String, $slug: String, $description: String, $parts:
       title
       slug
       description
+      measurements {
+        id
+      }
       parts {
         id
       }

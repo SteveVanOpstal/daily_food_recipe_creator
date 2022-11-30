@@ -59,7 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RecipesWidget()),
+                  MaterialPageRoute(
+                    builder: (context) => RecipesWidget(),
+                  ),
                 );
               },
               child: Text('Recipes'),
@@ -68,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ScheduleWidget()),
+                  MaterialPageRoute(
+                    builder: (context) => ScheduleWidget(),
+                  ),
                 );
               },
               child: Text('Schedule'),

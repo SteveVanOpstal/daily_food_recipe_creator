@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MeasurementWidget extends StatelessWidget {
-  MeasurementWidget({Key? key, required this.action}) : super(key: key);
+  MeasurementWidget({Key? key, required this.measurement}) : super(key: key);
 
-  final dynamic action;
+  final dynamic measurement;
 
   @override
   Widget build(BuildContext context) {
-    if (action == null) {
-      return Text('');
-    }
-
-    final measurement = action['measurement'];
-
     if (measurement == null) {
       return Text('');
     }

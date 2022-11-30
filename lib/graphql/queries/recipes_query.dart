@@ -4,7 +4,23 @@ query {
     id
     slug
     title
-    description,
+    description
+    draft
+    measurements {
+      id
+      amount
+      unit {
+        abbr
+        singular
+        plural
+      }
+      product {
+        name
+        plural
+        basic
+      }
+      static
+    }
     parts {
       id
       title

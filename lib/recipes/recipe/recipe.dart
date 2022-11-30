@@ -6,6 +6,7 @@ import 'package:daily_food_recipe_creator/recipes/recipe/recipe_title_edit.dart'
 import 'package:flutter/material.dart';
 
 import '../../helpers/secondary_text_button.dart';
+import '../measurements/measurements.dart';
 
 class RecipeWidget extends StatefulWidget {
   RecipeWidget({Key? key, this.recipe}) : super(key: key);
@@ -26,7 +27,9 @@ class _RecipeWidgetState extends State<RecipeWidget> {
       body: ListView(
         children: [
           PrimaryTextButton(
-            child: Text(widget.recipe['title'] ?? 'Title'),
+            child: Text(
+              (widget.recipe['title'] ?? 'Title').toString(),
+            ),
             onPressed: () {
               showDialog(
                 context: context,
@@ -42,7 +45,9 @@ class _RecipeWidgetState extends State<RecipeWidget> {
             },
           ),
           PrimaryTextButton(
-            child: Text(widget.recipe['slug'] ?? 'format-of-the-link'),
+            child: Text(
+              (widget.recipe['slug'] ?? 'format-of-the-link').toString(),
+            ),
             onPressed: () {
               showDialog(
                 context: context,
@@ -58,7 +63,9 @@ class _RecipeWidgetState extends State<RecipeWidget> {
             },
           ),
           SecondaryTextButton(
-            child: Text(widget.recipe['description'] ?? 'Description'),
+            child: Text(
+              (widget.recipe['description'] ?? 'Description').toString(),
+            ),
             onPressed: () {
               showDialog(
                 context: context,
@@ -73,6 +80,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
               );
             },
           ),
+          MeasurementsWidget(recipe: widget.recipe),
           PartsWidget(recipe: widget.recipe)
         ],
       ),

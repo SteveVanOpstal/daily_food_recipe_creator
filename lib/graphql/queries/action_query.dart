@@ -20,11 +20,11 @@ class ActionQueryWidget extends StatelessWidget {
             measurement {
               id
               amount
+              static
               unit {
                 abbr
                 singular
                 plural
-                relative
               }
               product {
                 name

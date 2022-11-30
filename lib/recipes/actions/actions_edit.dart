@@ -23,7 +23,7 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
   buildAddActionButton() {
     return GraphMutationWidget(
       query: addActionMutation,
-      builder: (addMutation, result) {
+      builder: (addMutation, _) {
         return GraphMutationWidget(
           completed: () {
             if (widget.changed != null) {
@@ -46,11 +46,12 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
                   'icon': 'hand',
                 });
                 final networkResult = await result.networkResult;
-                final id = networkResult?.data?['addAction']['action'][0]['id'];
-                if (!id.isEmpty) {
+                final newAction =
+                    networkResult?.data?['addAction']['action'][0];
+                if (newAction.isNotEmpty) {
                   setState(() {
                     widget.parent['actions']
-                        .add({'__typename': 'Action', 'id': id});
+                        .add({'__typename': 'Action', ...newAction});
                   });
                   final actions = (widget.parent['actions'] as List)
                       .map((a) => {'id': a['id']})
@@ -82,7 +83,7 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.actions.isEmpty) {
+    if (widget.actions == null || widget.actions.isEmpty) {
       return buildAddActionButton();
     }
     return Container(

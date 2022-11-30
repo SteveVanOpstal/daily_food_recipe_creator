@@ -18,8 +18,8 @@ class _RecipesWidgetState extends State<RecipesWidget> {
   buildRecipeButton(dynamic recipe) {
     return Column(children: [
       Text(
-        recipe['title'],
-        style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 2.0),
+        recipe['title'].toString(),
+        style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.0),
       ),
       Text(recipe['description'] ?? '')
     ]);
@@ -28,14 +28,19 @@ class _RecipesWidgetState extends State<RecipesWidget> {
   buildRecipes(List<dynamic> recipes) {
     var recipeWidgets = [];
     for (var recipe in recipes) {
-      recipeWidgets.add(ElevatedButton(
+      recipeWidgets.add(
+        ElevatedButton(
           onPressed: () {
-            Navigator.push(context,
-                PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
-              return RecipeWidget(recipe: recipe);
-            }));
+            Navigator.push(
+              context,
+              PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
+                return RecipeWidget(recipe: recipe);
+              }),
+            );
           },
-          child: buildRecipeButton(recipe)));
+          child: buildRecipeButton(recipe),
+        ),
+      );
     }
     return recipeWidgets;
   }
