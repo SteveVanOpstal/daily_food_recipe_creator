@@ -32,9 +32,13 @@ class _MeasurementEditWidgetState extends State<MeasurementEditWidget> {
           child: Column(
             children: [
               TextFormField(
-                initialValue: widget.measurement['amount'],
-                onChanged: (value) => _changes['amount'] = value,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                initialValue: widget.measurement['amount'].toString(),
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onChanged: (value) => _changes['amount'] = double.parse(value),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
+                ],
               ),
               GraphMutationWidget(
                 query: updateMeasurementMutation,
@@ -47,7 +51,10 @@ class _MeasurementEditWidgetState extends State<MeasurementEditWidget> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState?.save();
-                        updateMutation(_changes);
+                        updateMutation({
+                          'id': _changes['id'],
+                          'amount': _changes['amount']
+                        });
                       }
                     },
                   );

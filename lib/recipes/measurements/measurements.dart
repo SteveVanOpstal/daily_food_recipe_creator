@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:daily_food_recipe_creator/graphql/mutations/add_measurement_mutation.dart';
 import 'package:daily_food_recipe_creator/graphql/mutations/update_recipe_mutation.dart';
 import 'package:daily_food_recipe_creator/recipes/measurements/measurement.dart';
+import 'package:daily_food_recipe_creator/recipes/measurements/measurement_edit.dart';
 import 'package:flutter/material.dart';
 
 import '../../graphql/graph_mutation.dart';
@@ -63,7 +62,17 @@ class _MeasurementsWidgetState extends State<MeasurementsWidget> {
   buildMeasurements(List<dynamic> measurements) {
     return measurements.map(
       (measurement) => ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return MeasurementEditWidget(
+                measurement: measurement,
+                changes: () {},
+              );
+            },
+          );
+        },
         child: MeasurementWidget(measurement: measurement),
       ),
     );
