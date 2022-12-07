@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../measurements/measurement.dart';
+import '../measurements/measurement_amount.dart';
 
 class ActionDescriptionWidget extends StatelessWidget {
   ActionDescriptionWidget({Key? key, this.action}) : super(key: key);
@@ -16,7 +16,7 @@ class ActionDescriptionWidget extends StatelessWidget {
     return Row(
       children: [
         Text(descriptionSplits[0]),
-        MeasurementWidget(measurement: action['measurement']),
+        MeasurementAmountWidget(measurement: action['measurement']),
         Text(descriptionSplits.length >= 2 ? descriptionSplits[1] : ''),
       ],
     );

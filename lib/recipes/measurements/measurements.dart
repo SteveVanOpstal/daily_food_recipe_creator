@@ -1,10 +1,15 @@
 import 'package:daily_food_recipe_creator/graphql/mutations/add_measurement_mutation.dart';
 import 'package:daily_food_recipe_creator/graphql/mutations/update_recipe_mutation.dart';
-import 'package:daily_food_recipe_creator/recipes/measurements/measurement.dart';
-import 'package:daily_food_recipe_creator/recipes/measurements/measurement_edit.dart';
+import 'package:daily_food_recipe_creator/recipes/measurements/measurement_amount.dart';
+import 'package:daily_food_recipe_creator/recipes/measurements/measurement_amount_edit.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../graphql/graph_mutation.dart';
+import '../../graphql/graph_query.dart';
+import '../../graphql/queries/products_query.dart';
+import 'measurement_product.dart';
+import 'measurement_product_edit.dart';
 
 class MeasurementsWidget extends StatefulWidget {
   MeasurementsWidget({Key? key, required this.recipe}) : super(key: key);
@@ -61,19 +66,53 @@ class _MeasurementsWidgetState extends State<MeasurementsWidget> {
 
   buildMeasurements(List<dynamic> measurements) {
     return measurements.map(
-      (measurement) => ElevatedButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return MeasurementEditWidget(
-                measurement: measurement,
-                changes: () {},
+      (measurement) => Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return MeasurementAmountEditWidget(
+                    measurement: measurement,
+                    changes: () {},
+                  );
+                },
               );
             },
-          );
-        },
-        child: MeasurementWidget(measurement: measurement),
+            child: MeasurementAmountWidget(measurement: measurement),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return GraphQueryWidget(
+                    query: productsQuery,
+                    builder: (
+                      QueryResult result, {
+                      Refetch? refetch,
+                      FetchMore? fetchMore,
+                    }) {
+                      if (result.isLoading || result.data == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      return MeasurementProductEditWidget(
+                        measurement: measurement,
+                        allProducts: result.data!["queryProduct"],
+                        changes: () {},
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            child: MeasurementProductWidget(measurement: measurement),
+          ),
+        ],
       ),
     );
   }

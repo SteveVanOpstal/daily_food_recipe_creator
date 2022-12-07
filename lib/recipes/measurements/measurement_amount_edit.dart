@@ -3,18 +3,21 @@ import 'package:daily_food_recipe_creator/graphql/mutations/update_measurement_m
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MeasurementEditWidget extends StatefulWidget {
-  MeasurementEditWidget({Key? key, this.measurement, required this.changes})
+class MeasurementAmountEditWidget extends StatefulWidget {
+  MeasurementAmountEditWidget(
+      {Key? key, this.measurement, required this.changes})
       : super(key: key);
 
   final dynamic measurement;
   final VoidCallback changes;
 
   @override
-  _MeasurementEditWidgetState createState() => _MeasurementEditWidgetState();
+  _MeasurementAmountEditWidgetState createState() =>
+      _MeasurementAmountEditWidgetState();
 }
 
-class _MeasurementEditWidgetState extends State<MeasurementEditWidget> {
+class _MeasurementAmountEditWidgetState
+    extends State<MeasurementAmountEditWidget> {
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _changes = {};
 
