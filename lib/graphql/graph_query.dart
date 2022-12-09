@@ -39,7 +39,9 @@ class _GraphQueryWidgetState extends State<GraphQueryWidget> {
           );
 
           if (rootScaffoldMessengerKey.currentState != null) {
-            rootScaffoldMessengerKey.currentState!.showSnackBar(errorSnackbar);
+            WidgetsBinding.instance.addPostFrameCallback((_) =>
+                rootScaffoldMessengerKey.currentState!
+                    .showSnackBar(errorSnackbar));
           }
           return Center(child: Text('an error occured fetching the query'));
         }

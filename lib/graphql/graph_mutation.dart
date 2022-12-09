@@ -29,7 +29,9 @@ class GraphMutationWidget extends StatelessWidget {
           );
 
           if (rootScaffoldMessengerKey.currentState != null) {
-            rootScaffoldMessengerKey.currentState!.showSnackBar(errorSnackbar);
+            WidgetsBinding.instance.addPostFrameCallback((_) =>
+                rootScaffoldMessengerKey.currentState!
+                    .showSnackBar(errorSnackbar));
           }
         },
       ),

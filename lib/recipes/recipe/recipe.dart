@@ -80,7 +80,10 @@ class _RecipeWidgetState extends State<RecipeWidget> {
               );
             },
           ),
-          MeasurementsWidget(recipe: widget.recipe),
+          MeasurementsWidget(
+            recipe: widget.recipe,
+            changes: () => {},
+          ),
           PartsWidget(recipe: widget.recipe)
         ],
       ),

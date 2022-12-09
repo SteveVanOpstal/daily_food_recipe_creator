@@ -8,13 +8,18 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../../graphql/graph_mutation.dart';
 import '../../graphql/graph_query.dart';
 import '../../graphql/queries/products_query.dart';
+import '../../graphql/queries/units_query.dart';
 import 'measurement_product.dart';
 import 'measurement_product_edit.dart';
+import 'measurement_unit.dart';
+import 'measurement_unit_edit.dart';
 
 class MeasurementsWidget extends StatefulWidget {
-  MeasurementsWidget({Key? key, required this.recipe}) : super(key: key);
+  MeasurementsWidget({Key? key, required this.recipe, required this.changes})
+      : super(key: key);
 
   final dynamic recipe;
+  final VoidCallback changes;
 
   @override
   State<MeasurementsWidget> createState() => _MeasurementsWidgetState();
@@ -75,12 +80,46 @@ class _MeasurementsWidgetState extends State<MeasurementsWidget> {
                 builder: (BuildContext context) {
                   return MeasurementAmountEditWidget(
                     measurement: measurement,
-                    changes: () {},
+                    changes: () {
+                      widget.changes();
+                    },
                   );
                 },
               );
             },
             child: MeasurementAmountWidget(measurement: measurement),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return GraphQueryWidget(
+                    query: unitsQuery,
+                    builder: (
+                      QueryResult result, {
+                      Refetch? refetch,
+                      FetchMore? fetchMore,
+                    }) {
+                      if (result.isLoading || result.data == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      return MeasurementUnitEditWidget(
+                        measurement: measurement,
+                        allUnits: result.data!["queryUnit"] as List<dynamic>,
+                        changes: () {
+                          setState(() {});
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            child: MeasurementUnitWidget(measurement: measurement),
           ),
           ElevatedButton(
             onPressed: () {
@@ -102,8 +141,11 @@ class _MeasurementsWidgetState extends State<MeasurementsWidget> {
 
                       return MeasurementProductEditWidget(
                         measurement: measurement,
-                        allProducts: result.data!["queryProduct"],
-                        changes: () {},
+                        allProducts:
+                            result.data!["queryProduct"] as List<dynamic>,
+                        changes: () {
+                          setState(() {});
+                        },
                       );
                     },
                   );

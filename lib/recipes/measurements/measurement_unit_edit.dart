@@ -3,39 +3,39 @@ import 'package:daily_food_recipe_creator/graphql/mutations/update_measurement_m
 import 'package:flutter/material.dart';
 import 'package:fuzzy/fuzzy.dart';
 
-import '../../graphql/mutations/add_product_mutation.dart';
+import '../../graphql/mutations/add_unit_mutation.dart';
+import '../../graphql/mutations/remove_measurement_mutation.dart';
 import '../../helpers/edit_dialog.dart';
 
-class MeasurementProductEditWidget extends StatefulWidget {
-  MeasurementProductEditWidget(
+class MeasurementUnitEditWidget extends StatefulWidget {
+  MeasurementUnitEditWidget(
       {Key? key,
       this.measurement,
-      required this.allProducts,
+      required this.allUnits,
       required this.changes})
       : super(key: key);
 
   final dynamic measurement;
-  final List<dynamic> allProducts;
+  final List<dynamic> allUnits;
   final VoidCallback changes;
 
   @override
-  _MeasurementProductEditWidgetState createState() =>
-      _MeasurementProductEditWidgetState();
+  _MeasurementUnitEditWidgetState createState() =>
+      _MeasurementUnitEditWidgetState();
 }
 
-class _MeasurementProductEditWidgetState
-    extends State<MeasurementProductEditWidget> {
+class _MeasurementUnitEditWidgetState extends State<MeasurementUnitEditWidget> {
   final _formKey = GlobalKey<FormState>();
   String _filter = '';
 
-  buildAddProductButton() {
-    Map<String, dynamic> newProduct = {'basic': false};
+  buildAddUnitButton() {
+    Map<String, dynamic> newUnit = {};
     return ElevatedButton.icon(
       style: IconButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
       ),
       icon: Icon(Icons.add),
-      label: Text('Add product'),
+      label: Text('Add unit'),
       onPressed: () {
         showDialog(
           context: context,
@@ -48,12 +48,23 @@ class _MeasurementProductEditWidgetState
                     TextFormField(
                       decoration: const InputDecoration(
                         icon: Icon(Icons.person),
-                        labelText: 'Name',
+                        labelText: 'Abbreviation',
                         hintText:
-                            'The singular form of the product, for example `garlic clove` for garlic',
+                            'The short form of the unit, for example `l` for litre',
                       ),
                       onChanged: (value) {
-                        newProduct['name'] = value;
+                        newUnit['abbr'] = value;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.person),
+                        labelText: 'Singular',
+                        hintText:
+                            'The singular form of the unit, for example `litre` for litre',
+                      ),
+                      onChanged: (value) {
+                        newUnit['singular'] = value;
                       },
                     ),
                     TextFormField(
@@ -61,10 +72,10 @@ class _MeasurementProductEditWidgetState
                         icon: Icon(Icons.person),
                         labelText: 'Plural',
                         hintText:
-                            'The plural form of the product, for example `cloves of garlic` for garlic',
+                            'The plural form of the unit, for example `litres` for litre',
                       ),
                       onChanged: (value) {
-                        newProduct['plural'] = value;
+                        newUnit['plural'] = value;
                       },
                     ),
                     FormField(
@@ -79,15 +90,15 @@ class _MeasurementProductEditWidgetState
                       },
                     ),
                     GraphMutationWidget(
-                      query: addProductMutation,
+                      query: addUnitMutation,
                       builder: (addMutation, _) {
                         return ElevatedButton(
                           child: Text('submit'),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState?.save();
-                              addMutation(newProduct);
-                              widget.allProducts.add(newProduct);
+                              addMutation(newUnit);
+                              widget.allUnits.add(newUnit);
                               Navigator.pop(context);
                             }
                           },
@@ -107,11 +118,16 @@ class _MeasurementProductEditWidgetState
   @override
   Widget build(BuildContext context) {
     final fuse = Fuzzy<dynamic>(
-      widget.allProducts,
+      widget.allUnits,
       options: FuzzyOptions(keys: [
         WeightedKey(
-          name: 'name',
-          getter: (item) => item["name"],
+          name: 'abbr',
+          getter: (item) => item["abbr"],
+          weight: 0.5,
+        ),
+        WeightedKey(
+          name: 'singular',
+          getter: (item) => item["singular"],
           weight: 1,
         ),
         WeightedKey(
@@ -122,7 +138,9 @@ class _MeasurementProductEditWidgetState
       ]),
     );
 
-    final products = fuse.search(_filter).map((r) => r.item).toList();
+    final units = fuse.search(_filter).map((r) => r.item).toList();
+
+    final currentUnit = widget.measurement['unit'];
 
     return Scaffold(
       appBar: AppBar(
@@ -147,15 +165,42 @@ class _MeasurementProductEditWidgetState
                 height: 80,
                 child: Card(
                   child: Center(
-                    child: Text(widget.measurement['product']['name']),
+                    child: Text(currentUnit == null ? '' : currentUnit['abbr']),
                   ),
                 ),
               ),
-              ...products.map(
-                (product) => GraphMutationWidget(
+              GraphMutationWidget(
+                query: removeMeasurementMutation,
+                completed: () {
+                  widget.measurement['unit'] = null;
+                  Navigator.pop(context);
+                  widget.changes();
+                },
+                builder: (updateMutation, result) {
+                  return SizedBox(
+                    width: 150,
+                    height: 80,
+                    child: ElevatedButton(
+                      child: Text('Remove'),
+                      onPressed: () {
+                        if (currentUnit != null) {
+                          updateMutation({
+                            'id': widget.measurement['id'],
+                            'unit': {
+                              'abbr': currentUnit['abbr'],
+                            }
+                          });
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+              ...units.map(
+                (unit) => GraphMutationWidget(
                   query: updateMeasurementMutation,
                   completed: () {
-                    widget.measurement['product'] = product;
+                    widget.measurement['unit'] = unit;
                     Navigator.pop(context);
                     widget.changes();
                   },
@@ -164,12 +209,19 @@ class _MeasurementProductEditWidgetState
                       width: 150,
                       height: 80,
                       child: ElevatedButton(
-                        child: Text(product['name']),
+                        child: Column(
+                          children: [
+                            Text(unit['abbr']),
+                            unit['singular'] == null
+                                ? Text('')
+                                : Text(unit['singular']),
+                          ],
+                        ),
                         onPressed: () {
                           updateMutation({
                             'id': widget.measurement['id'],
-                            'product': {
-                              'name': product['name'],
+                            'unit': {
+                              'abbr': unit['abbr'],
                             }
                           });
                         },
@@ -180,7 +232,7 @@ class _MeasurementProductEditWidgetState
               ),
             ],
           ),
-          buildAddProductButton(),
+          buildAddUnitButton(),
         ],
       ),
     );
