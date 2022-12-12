@@ -5,6 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../graphql/graph_query.dart';
+import '../graphql/queries/recipes_query.dart';
 
 class ScheduleWidget extends StatefulWidget {
   ScheduleWidget({Key? key}) : super(key: key);
@@ -71,7 +72,42 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
               ),
               RecipeWidget(
                 recipeId: _selectedRecipeId,
-              )
+              ),
+              GraphQueryWidget(
+                query: recipesQuery,
+                builder: (
+                  QueryResult result, {
+                  Refetch? refetch,
+                  FetchMore? fetchMore,
+                }) {
+                  if (result.isLoading || result.data == null) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return Flex(
+                    direction: Axis.horizontal,
+                    children: (result.data!['queryRecipe'] as List)
+                        .map(
+                          (recipe) => ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Text('TODO');
+                                },
+                              );
+                            },
+                            child: Column(
+                              children: [Text(recipe['title'])],
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              ),
             ],
           );
         },

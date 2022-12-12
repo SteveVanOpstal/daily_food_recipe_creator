@@ -167,12 +167,21 @@ class _MeasurementsWidgetState extends State<MeasurementsWidget> {
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Card(
-        child: Column(
-          children: [
-            ...buildMeasurements(widget.recipe['measurements']),
-            buildAddMeasurementButton(),
-          ],
+      child: SizedBox(
+        height: 148,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Wrap(
+              direction: Axis.vertical,
+              spacing: 4,
+              runSpacing: 16,
+              children: [
+                ...buildMeasurements(widget.recipe['measurements']),
+                buildAddMeasurementButton(),
+              ],
+            ),
+          ),
         ),
       ),
     );
