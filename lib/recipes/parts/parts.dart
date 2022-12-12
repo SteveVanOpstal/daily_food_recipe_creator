@@ -78,7 +78,7 @@ class _PartsWidgetState extends State<PartsWidget> {
   buildParts(List<dynamic> parts) {
     var recipeParts = [];
     for (var part in parts) {
-      recipeParts.add(PartWidget(part: part));
+      recipeParts.add(PartWidget(recipe: widget.recipe, part: part));
     }
     return recipeParts;
   }

@@ -14,9 +14,14 @@ import 'action_icon_edit.dart';
 
 class ActionEditWidget extends StatefulWidget {
   ActionEditWidget(
-      {Key? key, required this.action, required this.parent, this.refetch})
+      {Key? key,
+      required this.recipe,
+      required this.action,
+      required this.parent,
+      this.refetch})
       : super(key: key);
 
+  final dynamic recipe;
   final dynamic parent;
   final dynamic action;
   final Refetch? refetch;
@@ -65,6 +70,7 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
                     context: context,
                     builder: (BuildContext context) {
                       return ActionDescriptionEditWidget(
+                        recipe: widget.recipe,
                         action: widget.action,
                         changed: () {
                           widget.refetch!();
@@ -124,6 +130,7 @@ class _ActionEditWidgetState extends State<ActionEditWidget> {
         Padding(
           padding: const EdgeInsets.only(left: 50.0),
           child: ActionsEditWidget(
+            recipe: widget.recipe,
             parent: widget.action,
             actions: widget.action['actions'],
             changed: () => widget.refetch!(),

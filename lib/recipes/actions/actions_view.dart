@@ -6,11 +6,13 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class ActionsViewWidget extends StatefulWidget {
   ActionsViewWidget(
       {Key? key,
+      required this.recipe,
       required this.parent,
       required this.actionIds,
       this.inverse = false})
       : super(key: key);
 
+  final dynamic recipe;
   final dynamic parent;
   final List<dynamic> actionIds;
   final bool inverse;
@@ -23,6 +25,7 @@ class _ActionsViewWidgetState extends State<ActionsViewWidget> {
   buildActions(List<dynamic> actions, Refetch? refetch) {
     return actions
         .map((action) => ActionEditWidget(
+                  recipe: widget.recipe,
                   parent: widget.parent,
                   action: action,
                   refetch: refetch,

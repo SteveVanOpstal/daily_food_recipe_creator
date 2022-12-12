@@ -30,7 +30,7 @@ class _ActionViewWidgetState extends State<ActionViewWidget> {
     ];
     var actions = widget.action['actions'] as List<dynamic>;
     if (actions.isNotEmpty) {
-      var actionIds = actions.map((a) => a['id']).toList();
+      // var actionIds = actions.map((a) => a['id']).toList();
 
       // children.add(
       //   Container(

@@ -17,7 +17,6 @@ class _EditDialogWidgetState extends State<EditDialogWidget> {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         width: 300,
-        height: widget.height,
         child: widget.child,
       ),
       insetPadding: EdgeInsets.all(8.0),

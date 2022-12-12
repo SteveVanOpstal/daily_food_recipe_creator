@@ -8,9 +8,14 @@ import '../../graphql/mutations/update_part_mutation.dart';
 
 class ActionsEditWidget extends StatefulWidget {
   ActionsEditWidget(
-      {Key? key, required this.parent, required this.actions, this.changed})
+      {Key? key,
+      required this.recipe,
+      required this.parent,
+      required this.actions,
+      this.changed})
       : super(key: key);
 
+  final dynamic recipe;
   final dynamic parent;
   final List<dynamic> actions;
   final VoidCallback? changed;
@@ -92,6 +97,7 @@ class _ActionsEditWidgetState extends State<ActionsEditWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ActionsViewWidget(
+            recipe: widget.recipe,
             parent: widget.parent,
             actionIds: widget.actions.map((a) => a['id']).toList(),
           ),

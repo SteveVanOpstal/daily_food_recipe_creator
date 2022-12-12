@@ -15,6 +15,10 @@ class MeasurementProductWidget extends StatelessWidget {
     double amount = measurement['amount'];
     final product = measurement['product'];
 
+    if (measurement['product'] == null) {
+      return Text('');
+    }
+
     final productSingular = product['name'];
     final productPlural = product['plural'] ?? productSingular;
 

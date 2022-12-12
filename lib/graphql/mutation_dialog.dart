@@ -11,7 +11,7 @@ class MutationDialogWidget extends StatefulWidget {
     required this.query,
     required this.changed,
     this.validator,
-    this.children,
+    this.builder,
   }) : super(key: key);
 
   final dynamic subject;
@@ -19,7 +19,8 @@ class MutationDialogWidget extends StatefulWidget {
   final String query;
   final Function changed;
   final String? Function(String?)? validator;
-  final List<Widget>? children;
+  final Widget Function(
+      BuildContext context, Function(VoidCallback fn) setState)? builder;
 
   @override
   _MutationDialogWidgetState createState() => _MutationDialogWidgetState();
@@ -51,7 +52,11 @@ class _MutationDialogWidgetState extends State<MutationDialogWidget> {
               autofocus: true,
               maxLines: 3,
             ),
-            ...(widget.children ?? []),
+            widget.builder == null
+                ? Text('')
+                : widget.builder!(context, (callback) {
+                    setState(callback);
+                  }),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

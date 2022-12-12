@@ -3,8 +3,9 @@ import 'package:daily_food_recipe_creator/recipes/parts/part_title_edit.dart';
 import 'package:flutter/material.dart';
 
 class PartWidget extends StatefulWidget {
-  PartWidget({Key? key, this.part}) : super(key: key);
+  PartWidget({Key? key, required this.recipe, this.part}) : super(key: key);
 
+  final dynamic recipe;
   final dynamic part;
 
   @override
@@ -38,6 +39,7 @@ class _PartWidgetState extends State<PartWidget> {
           },
         ),
         ActionsEditWidget(
+          recipe: widget.recipe,
           parent: widget.part,
           actions: widget.part['actions'],
           changed: () {
